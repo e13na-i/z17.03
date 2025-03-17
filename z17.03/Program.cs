@@ -8,20 +8,38 @@ namespace z17._03
 {
     internal class Program
     {
-        static void Main(string[] args)
+        static bool IsValidBrackets(string s)
         {
-            string input = Console.ReadLine();
             Stack<char> stack = new Stack<char>();
+            Dictionary<char, char> bracketPairs = new Dictionary<char, char>
+        {
+            { ')', '(' },
+            { '}', '{' },
+            { ']', '[' }
+        };
 
-            foreach (char ch in input)
+            foreach (char c in s)
             {
-                stack.Push(ch);
+                if (bracketPairs.ContainsValue(c))
+                {
+                    stack.Push(c);
+                }
+                else if (bracketPairs.ContainsKey(c))
+                {
+                    if (stack.Count == 0 || stack.Pop() != bracketPairs[c])
+                    {
+                        return false;
+                    }
+                }
             }
+            return stack.Count == 0;
+        }
 
-            while (stack.Count > 0)
-            {
-                Console.Write(stack.Pop());
-            }
+        static void Main()
+        {
+            string input= Console.ReadLine();
+
+            Console.WriteLine(IsValidBrackets(input));
         }
     }
 }
